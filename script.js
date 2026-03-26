@@ -5,6 +5,30 @@ let currentWeaponIndex = 0;
 let fighting;
 let inventory = ["stick"];
 let MonsterHealth;
+const weapons= [
+    {
+        name: "stick",
+        power: 5
+    },
+    {
+        name: "dagger",
+        power: 30
+    },
+    {
+        name: "claw hammer",
+        power: 50
+
+    },
+    {
+        name: "sword",
+        power: 100
+    }
+
+];
+
+
+
+
 const locations = [
     {
         name: "town square",
@@ -18,6 +42,14 @@ const locations = [
         "button functions": [buyHealth, buyWeapon, goTown],
         text: "You enter the store."
 },
+{
+   name: "cave",
+   "button text": ["Fight slime", "Fight fanged beast", "Go to town square"],
+   "button functions": [fightSlime, fightBeast, goTown],
+   text: "You enter the cave. You see some monsters."
+}
+
+
 
 
 
@@ -50,7 +82,7 @@ name: "Whiskers",
 // initialize buttons
 
 function goTown(){
-    update(locations);
+    update(locations[0]);// access one of the objects in the array
 
     /*
     button1.innerText = "Go to store"
@@ -67,6 +99,7 @@ function goTown(){
 
 
 function goStore(){
+    update(locations[1]);
     /*
     button1.innerText = "Buy 10 health (10 gold)"
     button2.innerText = "Buy weapon (30 gold)"
@@ -79,22 +112,26 @@ function goStore(){
     */
 }
 
-function update(location){
-    button1.innerText = "Go to store"
-    button2.innerText = "Go to cave"
-    button3.innerText = "Fight dragon"
-    text.innerText = "You are in the town square. You see a sign that says \"Store\"."
+function update(locations){
+    button1.innerText = location["button text"][0]
+    button2.innerText = location["button text"][1]
+    button3.innerText = location["button text"][2]
+    text.innerText = location.text
     //text.innerText = "You enter the store.";
 
-    button1.onclick = goStore;
-    button2.onclick = goCave;
-    button3.onclick = fightDragon;
-
+    button1.onclick = location["button functions"][0];
+    button2.onclick = location["button functions"][1];
+    button3.onclick = location["button functions"][2];
 }
+   // button2.onclick = goCave;
+   // button3.onclick = fightDragon;
+
+
 
 
 
 function goCave(){
+    update(locations[2])
     //button2.innerText = "Buy weapon (30 gold)"
 }
 
@@ -107,10 +144,34 @@ button2.onclick = goCave;
 button3.onclick = fightDragon;
 
 function buyHealth(){
+    if(gold >= 10){
+   gold  -= 10;
+   health += 10;
+   goldText.innerText = gold;
+   healthText.innerText = health;
+} else {
+    text.innerText = "You do not have enough gold to buy health."
+}
 
 }
 
 function buyWeapon(){
+    if(gold >= 30){
+        gold -= 30;
+        currentWeaponIndex ++;
+        goldText.innerText = gold;
+        let newWeapon = weapons[currentWeaponIndex].name
+        text.innerText = "You now have a " + newWeapon + "."
+        inventory.push(newWeapon);
+
+    }
 
 }
 
+function fightSlime(){
+
+}
+ 
+function fightBeast(){
+
+}
